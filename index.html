@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Radar de Comércios</title>
+<meta name="description" content="Encontre comércios próximos que não têm site, ou cujo site pode melhorar.">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Public+Sans:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="top">
+  <div class="brand">
+    <span class="brand-mark" aria-hidden="true"></span>
+    <h1>Radar de Comércios</h1>
+  </div>
+  <p class="tagline">Quem está perto de você e ainda não tem site.</p>
+</header>
+
+<main>
+  <section class="panel" aria-label="Filtros e resultados">
+    <form id="form" class="filters" autocomplete="off">
+      <fieldset>
+        <legend>Onde procurar</legend>
+        <div class="row">
+          <button type="button" id="btn-geo" class="btn btn-ghost">Usar minha localização</button>
+        </div>
+        <div class="row">
+          <label class="sr" for="address">Endereço ou cidade</label>
+          <input id="address" type="text" placeholder="Ou digite um endereço, bairro ou cidade">
+          <button type="button" id="btn-address" class="btn btn-ghost">Ir</button>
+        </div>
+        <p id="place-label" class="hint">Nenhum ponto escolhido. Clique no mapa para marcar um.</p>
+      </fieldset>
+
+      <fieldset>
+        <legend>Raio de busca: <output id="radius-out">1,0 km</output></legend>
+        <label class="sr" for="radius">Raio em metros</label>
+        <input id="radius" type="range" min="300" max="5000" step="100" value="1000">
+      </fieldset>
+
+      <fieldset>
+        <legend>Situação na web</legend>
+        <div id="status-chips" class="chips"></div>
+        <p class="hint">“Só rede social” inclui negócios que usam apenas Instagram ou Facebook.</p>
+      </fieldset>
+
+      <fieldset>
+        <legend>Tipo de comércio</legend>
+        <div id="cat-chips" class="chips"></div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Refinar</legend>
+        <div class="row">
+          <label class="sr" for="name-filter">Filtrar por nome</label>
+          <input id="name-filter" type="search" placeholder="Filtrar pelo nome">
+        </div>
+        <label class="check"><input id="only-phone" type="checkbox"> Só quem tem telefone cadastrado</label>
+        <div class="row">
+          <label for="sort" class="inline">Ordenar por</label>
+          <select id="sort">
+            <option value="dist">Mais perto</option>
+            <option value="name">Nome (A–Z)</option>
+          </select>
+        </div>
+      </fieldset>
+
+      <button id="btn-search" type="submit" class="btn btn-main">Buscar comércios</button>
+    </form>
+
+    <div class="results-head">
+      <h2 id="count">Resultados</h2>
+      <button id="btn-csv" type="button" class="btn btn-ghost small" disabled>Exportar CSV</button>
+    </div>
+    <p id="status-msg" class="msg" role="status">Escolha um ponto e toque em buscar.</p>
+    <ul id="list" class="list"></ul>
+
+    <footer class="foot">
+      Dados do OpenStreetMap, mantidos por voluntários. Um comércio “sem site” aqui pode ter um site que ninguém cadastrou. Use o botão Conferir antes de abordar.
+    </footer>
+  </section>
+
+  <div id="map" role="application" aria-label="Mapa dos comércios"></div>
+</main>
+
+<dialog id="dlg">
+  <form method="dialog" class="dlg-body">
+    <h3 id="dlg-title">Mensagem de abordagem</h3>
+    <label class="sr" for="dlg-text">Texto da mensagem</label>
+    <textarea id="dlg-text" rows="9"></textarea>
+    <div class="dlg-actions">
+      <a id="dlg-wa" class="btn btn-ghost" target="_blank" rel="noopener" hidden>Abrir no WhatsApp</a>
+      <button type="button" id="dlg-copy" class="btn btn-main">Copiar</button>
+      <button value="close" class="btn btn-ghost">Fechar</button>
+    </div>
+  </form>
+</dialog>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
